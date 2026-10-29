@@ -1,0 +1,62 @@
+{
+  "name": "@local/dsh-paper-mode",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Paper Mode: an Overleaf-style LaTeX workbench inside the DeepSeek Harness Web GUI, with a live bilingual (EN/ZH) typeset twin, bidirectional SyncTeX navigation, selectable PDF pages and a paper-aware assistant.",
+  "license": "MIT",
+  "author": "torfqy",
+  "icon": "./icon.svg",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "latex",
+    "overleaf",
+    "synctex",
+    "translation",
+    "paper-writing"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/torfqy/dsh-paper-mode.git",
+    "directory": "paper-mode"
+  },
+  "homepage": "https://github.com/torfqy/dsh-paper-mode#readme",
+  "bugs": {
+    "url": "https://github.com/torfqy/dsh-paper-mode/issues"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "lib/tex.js",
+    "lib/translate.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg"
+  ],
+  "dsh": {
+    "engines": {
+      "dsh": ">=0.2.1-rc.2"
+    },
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-layout",
+        "@deepseek-ai/dsh-client-ui-sidebar"
+      ]
+    }
+  }
+}

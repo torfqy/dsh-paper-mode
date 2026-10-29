@@ -1,0 +1,14 @@
+# Paper Mode bundle patch.
+#
+# One dual-face row: the node half (exports ".") serves the LaTeX build,
+# translation and chat routes on the host webserver; the `dsh.client`
+# declaration in package.json makes the browser half (exports "./client")
+# load in the Web GUI, where it adds a sidebar entry and its center-column page.
+#
+# `inject` is declared here as well as in the module so the row activates even
+# when the Loader already holds a cached module generation without it.
+- insert:
+    - id: paper-mode
+      name: '@local/dsh-paper-mode'
+      inject:
+        - webServer

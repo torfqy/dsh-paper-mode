@@ -1,0 +1,64 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage[hidelinks]{hyperref}
+
+\title{Speculative Decoding for Long-Context Retrieval Augmented Generation}
+\author{Your Name}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Retrieval augmented generation is bottlenecked by the latency of long-context decoding. We study speculative decoding under a fixed memory budget and show that the acceptance rate decays predictably with context length. Based on this observation we propose an adaptive draft length that keeps the expected speedup above $1.8\times$ across four retrieval benchmarks, without retraining the target model.
+\end{abstract}
+
+\section{Introduction}
+
+Long-context retrieval augmented generation (RAG) feeds a large retrieved context to the target model, which makes the decoding phase the dominant cost~\cite{lewis2020rag}. Speculative decoding replaces each sequential token with a batch of draft tokens that the target model verifies in one pass~\cite{leviathan2023fast}. The speedup depends on how often the draft is accepted.
+
+Prior work reports strong speedups on short prompts. We find that the picture changes when the retrieved context grows: the draft model is also conditioned on the longer context, so its distribution drifts and the acceptance rate falls.
+
+\section{Method}
+
+Let $p_t$ and $q_t$ denote the target and draft distributions at step $t$. Speculative decoding accepts a draft token with probability $\min(1, p_t/q_t)$, and the expected number of accepted tokens per verification is
+\begin{equation}
+  \mathbb{E}[\tau] = \frac{1 - \alpha^{L+1}}{1 - \alpha},
+  \label{eq:expected}
+\end{equation}
+where $\alpha$ is the acceptance rate and $L$ the draft length.
+
+\begin{table}[h]
+  \centering
+  \caption{Measured acceptance rate as the retrieved context grows on Natural Questions.}
+  \label{tab:accept}
+  \begin{tabular}{lccc}
+    \toprule
+    Retrieved tokens & 1K & 4K & 16K \\
+    \midrule
+    Acceptance rate & 0.82 & 0.71 & 0.54 \\
+    Speedup & 2.9$\times$ & 2.3$\times$ & 1.6$\times$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Table~\ref{tab:accept} shows that the acceptance rate falls from $0.82$ to $0.54$ when the retrieved context grows from one thousand to sixteen thousand tokens. Since Equation~\ref{eq:expected} is concave in $\alpha$, the optimal draft length shrinks as the context grows.
+
+We therefore choose $L$ adaptively, re-estimating $\alpha$ online from the last one hundred verifications and solving Equation~\ref{eq:expected} for the $L$ that keeps the expected speedup above a threshold.
+
+\section{Results}
+
+Adaptive draft length holds the speedup above $1.8\times$ on all four benchmarks, while a fixed length of eight drops to $1.2\times$ at sixteen thousand retrieved tokens. The overhead of re-estimation is below $1\%$ of the decoding time.
+
+\section{Conclusion}
+
+Speculative decoding in long-context RAG needs a draft length that follows the acceptance rate. Our online estimate is cheap and keeps the speedup stable. We leave the combination with retrieval re-ranking to future work.
+
+\bibliographystyle{plain}
+\bibliography{refs}
+
+\end{document}

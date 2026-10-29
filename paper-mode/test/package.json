@@ -1,0 +1,11 @@
+{
+  "name": "paper-mode-mount-test",
+  "private": true,
+  "type": "module",
+  "description": "Isolated harness for mount.test.mjs: keeps React and jsdom out of the plugin package.",
+  "devDependencies": {
+    "jsdom": "^24.1.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
+}

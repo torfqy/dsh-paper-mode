@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Paper Mode">
+  <rect x="6" y="5" width="34" height="46" rx="4" fill="#ffffff" stroke="#2f6fd0" stroke-width="3"/>
+  <path d="M13 17h20M13 25h20M13 33h13" stroke="#2f6fd0" stroke-width="3" stroke-linecap="round"/>
+  <rect x="30" y="27" width="28" height="32" rx="4" fill="#2f6fd0"/>
+  <text x="44" y="50" font-family="Microsoft YaHei, Noto Sans SC, sans-serif" font-size="21" font-weight="700" fill="#ffffff" text-anchor="middle">中</text>
+</svg>
